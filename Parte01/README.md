@@ -13,8 +13,8 @@ Miguel Riem Oliveira <mriem@ua.pt>
  - Tutoriais de OpenCV
 
 # Pressupostos para a realização dos exercícios
-- Ter o Linux instalado (ubuntu 20.04 *altamente recomendado*).
-- Instalação do Linux em modo dual boot (*altamente recomendado*, mas também se pode usar máquina virtual).
+- Ter o Linux instalado (ubuntu 24.04 **recomendado**).
+- Instalação do Linux em modo dual boot (**recomendado**, mas também se pode usar máquina virtual).
 - Ter o acesso de rede configurado (_wireless_).
 *   Consultar as instruções do site dos 
 http://www.ua.pt/stic/PageText.aspx?id=15224[sTIC].
@@ -45,7 +45,7 @@ Ver slides de apresentação da UC.
 
 # Introdução ao Linux e a Shell
 
-Ver o documento  `1-Linux-Breve Introdução`.
+Mostrar o terminal e os comandos mais frequentes.
 
 # Criação do ambiente e instalação de ferramentas básicas
 
@@ -59,7 +59,7 @@ Dentro de cada aula, em especial nas primeiras, é também recomendado criar uma
 
 Os guiões para as aulas estarão a ser continuamente atualizados em:
 
-https://github.com/miguelriemoliveira/savi_23-24
+https://github.com/miguelriemoliveira/savi_25-26
 
 Recomenda-se que, sempre que possível, usem a versão online ou façam o update frequentemente.
 
