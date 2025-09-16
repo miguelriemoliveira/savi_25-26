@@ -24,7 +24,22 @@ Finalmente, faça um efeito de anoitecer progressivo variando o valor do divisor
 
 Grave um vídeo com o processo de anoitecer da imagem.
 
-## Exercício 2 - Onde está o Wally?
+## Exercício 2 - Classificação
+
+O dataset cat_dog_savi é um dataset com 6 imagens de gatos e cães.
+
+Implemente a leitura das imagens e do ficheiro de `labels.txt`, mostrando para cada imagem o label correspondente.
+
+Depois, implemente um algoritmo que analise a imagem e faça a classificaçãp em `cat` ou `dog`. 
+
+## Exercício 3 - Segmentação
+
+Faça a segmentação da areia na imagem `praia.jpg`.
+
+
+## Exercício 4 - Deteção
+
+Onde está o Wally?
 
 Carregue a imagem *scene.jpg* e o modelo *wally.png*
 
@@ -34,14 +49,14 @@ Anote a posição do Wally desenhando um círculo à volta da sua cara.
 
 ![Exemplo de deteção do Wally](images/finding_wally.png)
 
-## Exercício 3 - Ainda o Wally?
+## Exercício 5 - Ainda o Wally?
 
 
 Experimente o programa do exercício anterior para as novas imagens **school.jpg** e **beach.jpg**. Porque não funciona? 
 
 Crie um sistema de carregar e arrastar com o rato que permita ao utilizador rapidamente criar um novo template para utilizar.
 
-## Exercício 4 - Destaca o Wally?
+## Exercício 6 - Destaca o Wally?
 
 Destaque o Wally detetado colocando todas as zonas da imagem que não são o Wally a cinzento.
 
