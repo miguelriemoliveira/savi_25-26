@@ -12,9 +12,9 @@ Miguel Riem Oliveira <mriem@ua.pt>
 
 ## Exercício 1 - Nightfall
 
-O objetivo é carregar a imagem _lake.jpg_ do disco e mostrá-la.
+O objetivo é carregar a imagem _lake.png_ do disco e mostrá-la.
 
-![Image](images/lake.jpg)
+![Image](images/lake.png)
 
 Depois deve-se diminuir a intensidade dos píxeis da metade direita da imagem para simular uma fotografia noturna.
 
@@ -34,14 +34,15 @@ Depois, implemente um algoritmo que analise a imagem e faça a classificaçãp e
 
 ## Exercício 3 - Segmentação
 
-Faça a segmentação da areia na imagem `praia.jpg`.
+Faça a segmentação da areia na imagem `praia.png`.
 
+![Image](images/praia.png)
 
 ## Exercício 4 - Deteção
 
 Onde está o Wally?
 
-Carregue a imagem *scene.jpg* e o modelo *wally.png*
+Carregue a imagem *scene.png* e o modelo *wally.png*
 
 Utilizando template matching encontre o Wally na imagem.
 
@@ -51,8 +52,7 @@ Anote a posição do Wally desenhando um círculo à volta da sua cara.
 
 ## Exercício 5 - Ainda o Wally?
 
-
-Experimente o programa do exercício anterior para as novas imagens **school.jpg** e **beach.jpg**. Porque não funciona? 
+Experimente o programa do exercício anterior para as novas imagens **school.png** e **beach.png**. Porque não funciona? 
 
 Crie um sistema de carregar e arrastar com o rato que permita ao utilizador rapidamente criar um novo template para utilizar.
 
