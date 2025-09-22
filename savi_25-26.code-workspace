@@ -1,13 +1,19 @@
 {
 	"folders": [
 		{
+			"name": "savi_25-26",
 			"path": "."
 		},
 		{
+			"name": "savi_solutions",
 			"path": "../savi_solutions"
 		},
 		{
+			"name": "savi_23-24",
 			"path": "../savi_23-24"
+		},
+		{
+			"path": "../savi_solutions2"
 		}
 	],
 	"settings": {}
