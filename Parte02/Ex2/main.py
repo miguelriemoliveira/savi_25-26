@@ -14,6 +14,10 @@ def main():
 
     dataset_path = '/home/mike/GoogleDrive/UA/Aulas/2025-2026/1ºSem/SAVI_25-26/savi_25-26/Parte02/cat_dog_savi'
 
+    # --------------------------------
+    # READING THE DATASET
+    # --------------------------------
+
     # Check all image filenames in disk
     image_filenames = glob.glob(dataset_path + "/*.jpeg")
     image_filenames.sort()
@@ -25,9 +29,43 @@ def main():
         image = cv2.imread(image_filename, cv2.IMREAD_COLOR)
         images.append(image)
 
-    # Shows image
-    for image in images:
-        cv2.imshow('Image X', image)
+    # Read the lavbels file
+    labels_filename = '/home/mike/GoogleDrive/UA/Aulas/2025-2026/1ºSem/SAVI_25-26/savi_25-26/Parte02/cat_dog_savi/labels.txt'
+    file_handle = open(labels_filename)
+    labels = []
+    for line in file_handle:
+        # print(line)
+        line = line[:-1]
+        labels.append(line)
+
+    print('labels = ' + str(labels))
+
+    # --------------------------------
+    # Doing the classification
+    # --------------------------------
+    predicted_labels = []
+    for idx, (image, label) in enumerate(zip(images, labels)):
+
+        print('image idx = ' + str(idx))
+
+        bgr = image[10, 10, :]
+        print('bgr = ' + str(bgr))
+
+        b, g, r = bgr  # extract the list or tuple into separate variables
+
+        if g > r and g > b:
+            predicted_label = 'cat'
+        else:
+            predicted_label = 'dog'
+
+        predicted_labels.append(predicted_label)
+
+    print('predicted_labels = ' + str(predicted_labels))
+
+    # Shows all images with their labels and their predictions
+    for idx, (image, label, predicted_label) in enumerate(zip(images, labels, predicted_labels)):
+        winname = 'Image ' + str(idx) + ' is a ' + label + ' pred as ' + predicted_label
+        cv2.imshow(winname, image)
         cv2.waitKey(0)
 
     exit(0)
