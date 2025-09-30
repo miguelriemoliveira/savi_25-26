@@ -46,7 +46,7 @@ def main():
         cv2.imshow('Current frame', frame)
 
         # Break if q is pressed
-        key = cv2.waitKey(20)
+        key = cv2.waitKey(0)
         # print('key = ' + str(key))
         if key == 113:
             print('You pressed q. Quitting.')
