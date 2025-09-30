@@ -44,6 +44,9 @@ def main():
     # Read and display all frames
     # ------------------------------------
     previous_average = None
+    previous_change_event = False
+    number_of_cars = 0
+    frame_count = 0
     while True:
 
         ret, frame = capture.read()
@@ -52,6 +55,11 @@ def main():
 
         # create image for drawing
         frame_gui = deepcopy(frame)
+
+        # Draw the frame count
+        cv2.putText(
+            frame_gui, '#frame ' + str(frame_count),
+            (10, 30), cv2.FONT_HERSHEY_SIMPLEX, 1, (0, 255, 0), 2, cv2.LINE_AA)
 
         # Draw the box on the image
         cv2.rectangle(frame_gui, (bbox['x'], bbox['y']), (bbox['x2'], bbox['y2']),
@@ -103,6 +111,20 @@ def main():
              bbox['y'] - 70),
             cv2.FONT_HERSHEY_SIMPLEX, 1, color, 2, cv2.LINE_AA)
 
+        # ---------------------------
+        # Count a car
+        # ---------------------------
+        # Option 1: Count the rising edges
+        if previous_change_event == False and change_event == True:  # a rising edge
+            number_of_cars += 1
+
+        previous_change_event = change_event
+
+        # Draw the number of cars
+        cv2.putText(
+            frame_gui, '#cars ' + str(number_of_cars),
+            (10, 70), cv2.FONT_HERSHEY_SIMPLEX, 1, (0, 255, 0), 2, cv2.LINE_AA)
+
         # Draw image
         cv2.imshow('Image GUI', frame_gui)
         # cv2.imshow('Image gray', frame_gray)
@@ -113,6 +135,8 @@ def main():
         if key == 113:
             print('You pressed q. Quitting.')
             break
+
+        frame_count += 1  # update the frame count
 
     cv2.destroyAllWindows()  # Close the window
 
