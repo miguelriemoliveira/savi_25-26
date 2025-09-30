@@ -3,6 +3,7 @@
 
 from copy import deepcopy
 import glob
+import time
 import cv2  # import the opencv library
 import numpy as np
 import argparse
@@ -43,10 +44,13 @@ def main():
     # ------------------------------------
     # Read and display all frames
     # ------------------------------------
+    fps = capture.get(cv2.CAP_PROP_FPS)
+
     previous_average = None
     previous_change_event = False
     number_of_cars = 0
     frame_count = 0
+    time_last_added_car = 0
     while True:
 
         ret, frame = capture.read()
@@ -114,16 +118,27 @@ def main():
         # ---------------------------
         # Count a car
         # ---------------------------
-        # Option 1: Count the rising edges
-        if previous_change_event == False and change_event == True:  # a rising edge
+        # Option 2: Count the rising edges conditioned by the blackout time
+        durante_since_a_car_was_counted = round(frame_count / fps - time_last_added_car, 1)
+
+        cv2.putText(
+            frame_gui, 'time since car ' + str(durante_since_a_car_was_counted),
+            (bbox['x'],
+             bbox['y'] - 150),
+            cv2.FONT_HERSHEY_SIMPLEX, 1, (255, 255, 0), 2, cv2.LINE_AA)
+
+        blackout_threshold = 0.8
+
+        if previous_change_event == False and change_event == True and \
+                durante_since_a_car_was_counted > blackout_threshold:
             number_of_cars += 1
+            time_last_added_car = frame_count / fps
 
         previous_change_event = change_event
 
         # Draw the number of cars
-        cv2.putText(
-            frame_gui, '#cars ' + str(number_of_cars),
-            (10, 70), cv2.FONT_HERSHEY_SIMPLEX, 1, (0, 255, 0), 2, cv2.LINE_AA)
+        cv2.putText(frame_gui, '#cars ' + str(number_of_cars),
+                    (10, 70), cv2.FONT_HERSHEY_SIMPLEX, 1, (0, 255, 0), 2, cv2.LINE_AA)
 
         # Draw image
         cv2.imshow('Image GUI', frame_gui)
