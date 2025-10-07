@@ -69,21 +69,29 @@ def main():
     #     cv2.circle(t_image_gui, (x, y), radius, color, 3)  # type: ignore
 
     # ----------------------------------
-    # Feature matching
+    # Feature matching (with David Lowe strategy)
     # ----------------------------------
     index_params = dict(algorithm=1, trees=15)
     search_params = dict(checks=50)
     flann_matcher = cv2.FlannBasedMatcher(index_params, search_params)
-    best_matches = flann_matcher.knnMatch(q_descriptors, t_descriptors, k=1)
+    best_matches = flann_matcher.knnMatch(q_descriptors, t_descriptors, k=2)
+    # k = 2 so that for every quaery_point we have the best and the second best matches
 
     q_image_gui = deepcopy(q_image)
     t_image_gui = deepcopy(t_image)
     # Create a list of matches
     matches = []
-    for match_idx, match in enumerate(best_matches):
+    for match_idx, match_vector in enumerate(best_matches):
 
-        best_match = match[0]  # to get the cv2.DMatch from the tuple [match = (cv2.DMatch)]
-        matches.append(best_match)  # create a list to show with drawMatches
+        best_match = match_vector[0]  # to get the cv2.DMatch from the tuple [match = (cv2.DMatch)]
+
+        # matches.append(best_match)  # taking the winnier, period
+        second_best_match = match_vector[1]
+
+        if best_match.distance < second_best_match.distance*0.75:
+            matches.append(best_match)  # D. Lowe approach
+        else:
+            continue
 
         q_idx = best_match.queryIdx
         t_idx = best_match.trainIdx
