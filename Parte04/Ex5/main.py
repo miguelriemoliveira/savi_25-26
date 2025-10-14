@@ -147,8 +147,38 @@ def main():
     # Fusion or stitching
     # ------------------------------
 
-    alpha = 0.8
-    mosaic_image = t_image*alpha + q_image_transformed*(1-alpha)
+    # Create a mask to denote where the q_image exists (is not black)
+    q_image_transformed_gray = cv2.cvtColor(q_image_transformed, cv2.COLOR_BGR2GRAY)  # type: ignore
+    q_mask = np.logical_not(q_image_transformed_gray == 0)
+
+    # initial approach
+    # alpha = 0.5
+    # mosaic_image = t_image*alpha + q_image_transformed*(1-alpha)
+
+    # for loop based approach
+    # mosaic_image = t_image * 0
+    # for row in range(0, height_t):
+    #     if row % 100 == 0:
+    #         print('row = ' + str(row))
+
+    #     for col in range(0, width_t):
+    #         if q_mask[row, col] == 1:  # if the pixel has que query defined, use average based fuction
+    #             mosaic_image[row, col, 0] = 0.5 * t_image[row, col,
+    #                                                       0] + 0.5 * q_image_transformed[row, col, 0]  # blue
+    #             mosaic_image[row, col, 1] = 0.5 * t_image[row, col,
+    #                                                       1] + 0.5 * q_image_transformed[row, col, 1]  # green
+    #             mosaic_image[row, col, 2] = 0.5 * t_image[row, col,
+    #                                                       2] + 0.5 * q_image_transformed[row, col, 2]  # red
+    #         else:  # use only the color of the target
+    #             mosaic_image[row, col, 0] = t_image[row, col, 0]  # blue
+    #             mosaic_image[row, col, 1] = t_image[row, col, 1]  # green
+    #             mosaic_image[row, col, 2] = t_image[row, col, 2]  # red
+
+    # np where (matricial ) based approach
+
+    mosaic_image = t_image  # the outer part is alreay ok, jsut need to change the middel
+    # mosaic_image[q_mask] = 0.5 * t_image[q_mask] + 0.5 * q_image_transformed[q_mask]
+    mosaic_image[q_mask] = q_image_transformed[q_mask]
 
     # Convert the mosaic back to unsigned integer 8 bits (uint8)
     mosaic_image = mosaic_image.astype(np.uint8)
@@ -171,6 +201,14 @@ def main():
     win_name = 'query image transformed'
     cv2.namedWindow(win_name, cv2.WINDOW_NORMAL)
     cv2.imshow(win_name, q_image_transformed)  # type: ignore
+
+    win_name = 'query image_gray'
+    cv2.namedWindow(win_name, cv2.WINDOW_NORMAL)
+    cv2.imshow(win_name, q_image_transformed_gray)  # type: ignore
+
+    win_name = 'query mask'
+    cv2.namedWindow(win_name, cv2.WINDOW_NORMAL)
+    cv2.imshow(win_name, q_mask.astype(np.uint8)*255)  # type: ignore
 
     win_name = 'matches_image'
     cv2.namedWindow(win_name, cv2.WINDOW_NORMAL)
