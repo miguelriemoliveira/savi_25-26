@@ -57,12 +57,7 @@ def main():
     # ------------------------------
     # Fusion or stitching
     # ------------------------------
-
-    # Create a mask to denote where the q_image exists (is not black)
-    q_image_transformed_gray = cv2.cvtColor(q_image, cv2.COLOR_BGR2GRAY)  # type: ignore
-    q_mask = np.logical_not(q_image_transformed_gray == 0)
-
-    mosaic_image = t_image  # the outer part is alreay ok, jsut need to change the middel
+    mosaic_image = deepcopy(t_image)  # the outer part is alreay ok, jsut need to change the middel
     mosaic_image[q_mask] = 0.5 * t_image[q_mask] + 0.5 * q_image[q_mask]
     # mosaic_image[q_mask] = q_image_transformed[q_mask]
 

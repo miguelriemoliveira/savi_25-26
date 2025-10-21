@@ -59,6 +59,8 @@ def objectiveFunction(params, shared_mem):
     # TODO how can we do this?
     error = random.random()
 
+    # TODO recompute the mosaic and show it
+
     # Draw the new line
     win_name = 'query image'
     cv2.namedWindow(win_name, cv2.WINDOW_NORMAL)
