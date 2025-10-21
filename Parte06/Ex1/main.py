@@ -9,7 +9,7 @@ import cv2  # import the opencv library
 # from matplotlib import pyplot as plt
 import numpy as np
 import argparse
-from auxiliary_functions import changeImageColor, objectiveFunction
+from auxiliary_functions import changeImageColor, objectiveFunction, computeMosaic
 from scipy.optimize import least_squares
 
 # import matplotlib
@@ -57,12 +57,12 @@ def main():
     # ------------------------------
     # Fusion or stitching
     # ------------------------------
-    mosaic_image = deepcopy(t_image)  # the outer part is alreay ok, jsut need to change the middel
-    mosaic_image[q_mask] = 0.5 * t_image[q_mask] + 0.5 * q_image[q_mask]
-    # mosaic_image[q_mask] = q_image_transformed[q_mask]
+    # mosaic_image = deepcopy(t_image)  # the outer part is alreay ok, jsut need to change the middel
+    # mosaic_image[q_mask] = 0.5 * t_image[q_mask] + 0.5 * q_image[q_mask]
+    # # mosaic_image[q_mask] = q_image_transformed[q_mask]
 
-    # Convert the mosaic back to unsigned integer 8 bits (uint8)
-    mosaic_image = mosaic_image.astype(np.uint8)
+    # # Convert the mosaic back to unsigned integer 8 bits (uint8)
+    # mosaic_image = mosaic_image.astype(np.uint8)
 
     # ---------------------------------------
 
@@ -74,9 +74,9 @@ def main():
     # cv2.namedWindow(win_name, cv2.WINDOW_NORMAL)
     # cv2.imshow(win_name, q_mask.astype(np.uint8)*255)  # type: ignore
 
-    # win_name = 'mosaic_image'
-    # cv2.namedWindow(win_name, cv2.WINDOW_NORMAL)
-    # cv2.imshow(win_name, mosaic_image)  # type: ignore
+    win_name = 'original mosaic'
+    cv2.namedWindow(win_name, cv2.WINDOW_NORMAL)
+    cv2.imshow(win_name, computeMosaic(t_image, q_image, q_mask))  # type: ignore
 
     # ------------------------------------
     # Start optimization
@@ -85,11 +85,17 @@ def main():
 
     initial_params = [1.0, 0.0]
     result = least_squares(partial(objectiveFunction, shared_mem=shared_mem),
-                           initial_params)
+                           initial_params, diff_step=0.1)
 
     print('Optimization finished. Result=\n' + str(result))
 
     cv2.waitKey(0)
+
+    # TODO
+    # Homework:
+
+    # 1. Can we change the colors of the t_image instead of the colores in the q_image?
+    # 2. Can we change the colors of both images at the same time?
 
 
 if __name__ == '__main__':

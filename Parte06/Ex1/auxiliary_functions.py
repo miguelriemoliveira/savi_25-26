@@ -40,6 +40,17 @@ def changeImageColor(image_in, s, b, mask=None):
     return image_out
 
 
+def computeMosaic(t_image, q_image, mask):
+
+    mosaic_image = deepcopy(t_image)  # the outer part is alreay ok, jsut need to change the middel
+    mosaic_image[mask] = 0.5 * t_image[mask] + 0.5 * q_image[mask]
+    # mosaic_image[q_mask] = q_image_transformed[q_mask]
+
+    # Convert the mosaic back to unsigned integer 8 bits (uint8)
+    mosaic_image = mosaic_image.astype(np.uint8)
+    return mosaic_image
+
+
 # Define the objective function
 def objectiveFunction(params, shared_mem):
     # minimuzed version = objectiveFunction(params), shared_mem was already given
@@ -51,21 +62,32 @@ def objectiveFunction(params, shared_mem):
     print('s = ' + str(s))
     print('b = ' + str(b))
     q_image = shared_mem['q_image']
+    t_image = shared_mem['t_image']
+    q_mask = shared_mem['q_mask']
 
     # Applying the image model
-    q_image_out = changeImageColor(q_image, s=s, b=b, mask=shared_mem['q_mask'])
+    q_image_changed = changeImageColor(q_image, s=s, b=b, mask=q_mask)
 
     # Compute the error
-    # TODO how can we do this?
-    error = random.random()
+    diff_image = cv2.absdiff(t_image, q_image_changed)
+
+    # Calculate the average of the absolute differences
+    # The mean is calculated across all elements (pixels and channels) in the diff_image.
+    error = np.mean(diff_image[q_mask])
 
     # TODO recompute the mosaic and show it
+    mosaic_image = computeMosaic(t_image, q_image_changed, q_mask)
 
     # Draw the new line
     win_name = 'query image'
     cv2.namedWindow(win_name, cv2.WINDOW_NORMAL)
-    cv2.imshow(win_name, q_image_out)  # type: ignore
-    cv2.waitKey(50)
+    cv2.imshow(win_name, q_image_changed)  # type: ignore
+
+    win_name = 'mosaic'
+    cv2.namedWindow(win_name, cv2.WINDOW_NORMAL)
+    cv2.imshow(win_name, mosaic_image)  # type: ignore
+
+    cv2.waitKey(500)
 
     print('error = ' + str(error))
     return error  # can be a scalar or a list
