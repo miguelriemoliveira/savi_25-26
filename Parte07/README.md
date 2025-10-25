@@ -56,6 +56,14 @@ Calcule as normais para os pontos filtrados no exercício anterior.
 
 ## Exercício 6
 
+Sendo $\mathbf{n} = [n_x, n_y, n_z]$ vetor normal a cada point da nuvem de pontos e $\mathbf{z} = [0, 0, 1]$ o vetor normal alinhado com o eixo z, o ângulo $\theta$ entre estes dois vetores é calculado usando a fórmula do produto escalar:
+
+$$
+\theta = \arccos\left(\frac{\mathbf{n} \cdot \mathbf{z}}{||\mathbf{n}|| \cdot ||\mathbf{z}||}\right)
+$$
+
+em que $\mathbf{n} \cdot \mathbf{z}$ é o produto escalar dos dois vetores, definido como $n_x z_x + n_y z_y + n_z z_z$, e $||\cdot||$ é a magnitude (norma Euclidiana) de um vetor
+
 Extraia da nuvem de pontos apenas os pontos que têm uma normal próxima da orientação vertical, e assinale-os a verde.
 
 ![Image](docs/vertical_filter.png)
@@ -68,7 +76,7 @@ Extraia da nuvem de pontos apenas os pontos que deverão pertencer a uma superf�
 
 ## Exercício 8
 
-Utilize a filtragem dos pontos pelas suas normais para guiar o algoritmo de RANSAC e assim evitar a deteção de planos como os assinalados a amarelo e laranja no exercício 2.
+Utilize a filtragem dos pontos pelas suas normais para guiar o algoritmo de RANSAC e assim evitar a deteção de planos como os assinalados a amarelo e laranja no exercício 3.
 
 O programa deverá detetar as superfícies horizontais do edifício, i.e., o terraço e as varandas, bem como as superfícies verticais como as paredes.
 
