@@ -94,9 +94,10 @@ Antes de iniciar as tarefas específicas, terá de implementar as seguintes etap
 2.  **Formulação do Problema de Otimização:**
     *   **Função Objetivo:** Minimizar o raio `r` da esfera.
     *   **Restrições:** Todos os pontos pertencentes às nuvens de pontos 1 e 2 deverão estar contidos dentro da esfera. Isso significa que, para cada ponto `p = (x, y, z)` de ambas as nuvens, a distância euclidiana do ponto `p` ao centro `(xc, yc, zc)` da esfera deve ser menor ou igual ao raio `r`.
-        *   `sqrt((x - xc)^2 + (y - yc)^2 + (z - zc)^2) <= r` para todos os pontos.
+    *   `sqrt((x - xc)^2 + (y - yc)^2 + (z - zc)^2) <= r` para todos os pontos.
 
 **Deliverable:** Código Python **main_minimum_enclosing_sphere.py** que implementa a otimização para determinar os parâmetros `(xc, yc, zc)` e `r` da esfera englobante mínima. Inclua uma breve análise dos resultados obtidos.
+
 ---
 
 ## Entrega
