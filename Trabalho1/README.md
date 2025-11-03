@@ -83,21 +83,20 @@ Antes de iniciar as tarefas específicas, terá de implementar as seguintes etap
 
 ---
 
-### Tarefa 3: Inicialização do ICP com Features 2D (OpenCV & PnP)
+### Tarefa 3: Otimização da Esfera Englobante Mínima
 
-**Objetivo:** Demonstrar a conexão entre o processamento de imagem 2D e o registo 3D, utilizando features visuais para obter uma estimativa inicial para o ICP.
+**Objetivo:** Adicionar parâmetros de uma esfera à otimização anterior para encontrar a menor esfera possível que contenha todos os pontos de duas nuvens de pontos especificadas.
 
-1.  **Deteção e Matching de Features 2D (OpenCV):**
-    *   Nas imagens RGB originais, detete features 2D robustas (e.g., SIFT, ORB, AKAZE) usando **OpenCV** (`cv2.SIFT_create()`, `cv2.BFMatcher()`, etc.).
-    *   Faça o matching destas features entre o par de imagens RGB.
-2.  **Estimação da Transformação Inicial (OpenCV `cv2.solvePnP` ou similar):**
-    *   Com base nas correspondências 3D geradas no passo anterior, utilize `cv2.solvePnP` ou uma técnica similar (e.g., SVD para registo de nuvens de pontos 3D-3D) para estimar a transformação rígida inicial entre as duas nuvens de pontos.
-    *   *Nota:* `solvePnP` tipicamente estima a pose da câmara em relação a um objeto. Pode ser adaptado para estimar a transformação entre dois conjuntos de pontos 3D. Alternativamente, pode implementar a solução SVD para registo 3D-3D (Procrustes analysis).
-3.  **Integração:** Passe a matriz de transformação inicial obtida do `solvePnP` (ou SVD 3D-3D) para o seu ICP personalizado (da Tarefa 2).
-4.  **Comparação:** Compare os resultados desta inicialização com as abordagens de inicialização manual e global.
+1.  **Definição dos Parâmetros da Esfera:**
+    *   Acrescente à otimização os seguintes parâmetros para a esfera:
+        *   Coordenadas do centro: `(xc, yc, zc)`
+        *   Raio da esfera: `r`
+2.  **Formulação do Problema de Otimização:**
+    *   **Função Objetivo:** Minimizar o raio `r` da esfera.
+    *   **Restrições:** Todos os pontos pertencentes às nuvens de pontos 1 e 2 deverão estar contidos dentro da esfera. Isso significa que, para cada ponto `p = (x, y, z)` de ambas as nuvens, a distância euclidiana do ponto `p` ao centro `(xc, yc, zc)` da esfera deve ser menor ou igual ao raio `r`.
+        *   `sqrt((x - xc)^2 + (y - yc)^2 + (z - zc)^2) <= r` para todos os pontos.
 
-**Deliverable:** Código Python **main_custom_icp_with_2d_initial_guess.py** que demonstra a inicialização do ICP personalizado usando features 2D e `solvePnP` (ou SVD 3D-3D). Análise da sua eficácia.
-
+**Deliverable:** Código Python **main_minimum_enclosing_sphere.py** que implementa a otimização para determinar os parâmetros `(xc, yc, zc)` e `r` da esfera englobante mínima. Inclua uma breve análise dos resultados obtidos.
 ---
 
 ## Entrega
