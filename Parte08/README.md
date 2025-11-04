@@ -36,9 +36,3 @@ Grave as duas nuvens de pontos para disco como 1.ply e 2.ply
 
 Faça o tutorial de [iterative closest point do open3d](https://www.open3d.org/docs/latest/tutorial/pipelines/icp_registration.html) com as nuvens de pontos obtidas no exercício 2.
 
-## Exercício 3 - esfera que engloba todos os pontos
-
-Acrescente à otimização anterior os parâmetros de posição do centro (xc,yc e zc) e raio (r) de uma esfera que contenha todos os pontos.
-
-A esfera deve ser a menor possível, mas todos os pontos das núvens de pontos 1 e 2 deverão estar dentro dela.
-

@@ -5,8 +5,8 @@ from copy import deepcopy
 from functools import partial
 import glob
 from random import randint
-import cv2  # import the opencv library
 # from matplotlib import pyplot as plt
+from matplotlib import pyplot as plt
 import numpy as np
 import argparse
 import open3d as o3d
@@ -36,38 +36,66 @@ view = {
 def main():
 
     # ------------------------------------
-    # Setu pargparse
+    # Visualize the point cloud
     # ------------------------------------
-    parser = argparse.ArgumentParser(
-        prog='Point cloud processing',
-        description='Process point clouds',)
+    filename_rgb1 = '../tum_dataset/rgb/1.png'
+    rgb1 = o3d.io.read_image(filename_rgb1)
 
-    parser.add_argument('-fn', '--filename', type=str, default='../point_clouds/factory.ply')
-    # parser.add_argument('-ti', '--target_image', type=str, default='../images/santorini/2.png')
+    filename_depth1 = '../tum_dataset/depth/1.png'
+    depth1 = o3d.io.read_image(filename_depth1)
 
-    args = vars(parser.parse_args())
-    print(args)
+    # Create the rgbd image
+    rgbd1 = o3d.geometry.RGBDImage.create_from_tum_format(rgb1, depth1)
+    print(rgbd1)
 
-    # ------------------------------------
-    # Load the point cloud
-    # ------------------------------------
-    point_cloud = o3d.io.read_point_cloud(args['filename'])
-    print(point_cloud)
+    filename_rgb2 = '../tum_dataset/rgb/2.png'
+    rgb2 = o3d.io.read_image(filename_rgb2)
 
-    print('First point:' + str(point_cloud.points[0]))
-    print('Number of points: ' + str(len(point_cloud.points)))
+    filename_depth2 = '../tum_dataset/depth/2.png'
+    depth2 = o3d.io.read_image(filename_depth2)
 
-    # axes_mesh = o3d.geometry.create_mesh_coordinate_frame(size=2)
-    axes_mesh = o3d.geometry.TriangleMesh().create_coordinate_frame(size=10)
+    # Create the rgbd image
+    rgbd2 = o3d.geometry.RGBDImage.create_from_tum_format(rgb2, depth2)
+    print(rgbd2)
+
+    # Show the images using matplotlib
+    # plt.subplot(1, 2, 1)
+    # plt.title('TUM grayscale image')
+    # plt.imshow(rgbd1.color)
+    # plt.subplot(1, 2, 2)
+    # plt.title('TUM depth image')
+    # plt.imshow(rgbd1.depth)
+    # plt.show()
+
+    # Obtain the point cloud from the rgbd image
+    pcd1 = o3d.geometry.PointCloud.create_from_rgbd_image(
+        rgbd1, o3d.camera.PinholeCameraIntrinsic(
+            o3d.camera.PinholeCameraIntrinsicParameters.PrimeSenseDefault))
+
+    pcd2 = o3d.geometry.PointCloud.create_from_rgbd_image(
+        rgbd2, o3d.camera.PinholeCameraIntrinsic(
+            o3d.camera.PinholeCameraIntrinsicParameters.PrimeSenseDefault))
+
+    # Flip it, otherwise the pointcloud will be upside down
+    # pcd.transform([[1, 0, 0, 0], [0, -1, 0, 0], [0, 0, -1, 0], [0, 0, 0, 1]])
+    # o3d.visualization.draw_geometries([pcd], zoom=0.35)
 
     # ------------------------------------
     # Visualize the point cloud
     # ------------------------------------
 
-    # Create entities list of objects to draw
-    entities = [point_cloud, axes_mesh]
+    axes_mesh = o3d.geometry.TriangleMesh().create_coordinate_frame(size=0.5)
 
-    # Draw the geometries
+    # # Create entities list of objects to draw
+    # entities = [pcd1, axes_mesh]
+    # entities = [pcd2, axes_mesh]
+
+    # paint points to get a better visualization
+    pcd1.paint_uniform_color([1, 0, 0])  # reg, green, blue
+    pcd2.paint_uniform_color([0, 0, 1])
+    entities = [pcd1, pcd2, axes_mesh]
+
+    # # Draw the geometries
     o3d.visualization.draw_geometries(entities,
                                       front=view['trajectory'][0]['front'],
                                       lookat=view['trajectory'][0]['lookat'],
