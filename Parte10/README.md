@@ -1,4 +1,4 @@
-# Parto 10 — Ferramentas de visualização da performance do treino
+# Parte 10 — Ferramentas de visualização da performance do treino
 
 Esta aula aborda ferramentas essenciais para monitorizar, avaliar e otimizar o desempenho dos modelos de Machine Learning. No treino de redes neurais, é crucial não só executar o código, mas também compreender o seu funcionamento interno e os resultados gerados.
 Nesta sessão, será explorado como:
